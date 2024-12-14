@@ -1,16 +1,13 @@
 package com.community.tool_library.dtos;
 
-import lombok.Builder;
-import lombok.Data;
+import java.time.LocalDateTime;
 
-@Data
-@Builder
-public class UserDTO {
-    private Long id;
-    private String username;
-    private String email;
-    private String role;
-    private String lastLogin;
-    private String createdAt;
-    private String updatedAt;
-}
+public record UserDTO(
+        Long id,
+        String username,
+        String email,
+        String role,
+        LocalDateTime lastLogin,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
+) {}

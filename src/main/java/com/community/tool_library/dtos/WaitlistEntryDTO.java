@@ -1,13 +1,10 @@
 package com.community.tool_library.dtos;
 
-import lombok.Builder;
-import lombok.Data;
+import java.time.LocalDateTime;
 
-@Data
-@Builder
-public class WaitlistEntryDTO {
-    private Long id;
-    private Long itemId;
-    private Long userId;
-    private String createdAt;
-}
+public record WaitlistEntryDTO(
+        Long id,
+        Long itemId,
+        Long userId,
+        LocalDateTime createdAt
+) {}

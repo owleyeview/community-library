@@ -1,6 +1,6 @@
 package com.community.tool_library.dtos;
 
-public record ToolDTO (
+public record ItemDTO (
      Long id,
      String name,
      String description,

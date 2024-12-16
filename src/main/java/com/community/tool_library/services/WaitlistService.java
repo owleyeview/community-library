@@ -8,9 +8,9 @@ public interface WaitlistService {
 
     WaitlistEntryDTO placeHold(Long itemId, Long userId);
 
-    void removeHold(Long itemId, Long userId);
+    void cancelHold(Long itemId, Long userId);
 
-    void notifyNextUser(Long itemId);
+    WaitlistEntryDTO notifyNextUser(Long itemId);
 
     List<WaitlistEntryDTO> getWaitlistForItem(Long itemId);
 }

@@ -12,6 +12,8 @@ public interface ItemService {
 
     ItemDTO updateItem(ItemDTO itemDTO, long userId);
 
+    void updateAvailability(Long itemId, boolean available);
+
     void deleteItem(Long itemId, Long userId);
 
     List<ItemDTO> searchItems(String query);

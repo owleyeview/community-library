@@ -4,20 +4,25 @@ import com.community.tool_library.dtos.ItemDTO;
 import com.community.tool_library.models.Item;
 import com.community.tool_library.models.User;
 import com.community.tool_library.repositories.ItemRepository;
+import com.community.tool_library.repositories.UserRepository;
 import com.community.tool_library.services.ItemService;
 import com.community.tool_library.services.UserService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 
+    private final UserRepository userRepository;
     private ItemRepository itemRepository;
     private UserService userService;
+
+    public ItemServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public ItemDTO createItem(ItemDTO itemDTO, Long userId) {
@@ -43,6 +48,13 @@ public class ItemServiceImpl implements ItemService {
         item.setValue(new BigDecimal(itemDTO.value()));
         Item updatedItem = itemRepository.save(item);
         return mapToDTO(updatedItem);
+    }
+
+    @Override
+    public void updateAvailability(Long itemId, boolean available) {
+        Item item = getItemEntity(itemId);
+        item.setAvailable(available);
+        itemRepository.save(item);
     }
 
     @Override

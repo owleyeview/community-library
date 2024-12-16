@@ -31,9 +31,9 @@ public abstract class Item {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "availability", nullable = false)
+    @Column(name = "available", nullable = false)
     @NotBlank
-    private boolean availability = true;
+    private boolean available = true;
 
     @Column(name = "value", nullable = false)
     @NotBlank

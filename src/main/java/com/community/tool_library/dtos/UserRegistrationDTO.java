@@ -1,10 +1,7 @@
 package com.community.tool_library.dtos;
 
-import java.time.LocalDateTime;
-
-public record UserDTO(
-        Long id,
+public record UserRegistrationDTO(
         String username,
         String email,
-        String role
+        String password // raw password!
 ) {}

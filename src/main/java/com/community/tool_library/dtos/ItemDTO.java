@@ -4,7 +4,7 @@ public record ItemDTO (
      Long id,
      String name,
      String description,
-     boolean availability,
+     boolean available,
      String value,
-     UserDTO owner
+     Long ownerId
 ) {}

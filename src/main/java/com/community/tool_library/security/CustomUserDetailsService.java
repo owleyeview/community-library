@@ -14,6 +14,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
 
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByUsername(username);

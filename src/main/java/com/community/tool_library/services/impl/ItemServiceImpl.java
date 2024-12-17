@@ -2,6 +2,7 @@ package com.community.tool_library.services.impl;
 
 import com.community.tool_library.dtos.ItemDTO;
 import com.community.tool_library.models.Item;
+import com.community.tool_library.models.Tool;
 import com.community.tool_library.models.User;
 import com.community.tool_library.repositories.ItemRepository;
 import com.community.tool_library.repositories.UserRepository;
@@ -94,7 +95,7 @@ public class ItemServiceImpl implements ItemService {
 
     // helper methods
     private Item mapToEntity(ItemDTO dto, User owner) {
-        return Item.builder()
+        return Tool.toolBuilder()
                 .name(dto.name())
                 .description(dto.description())
                 .available(dto.available())

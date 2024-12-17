@@ -55,7 +55,7 @@ public class BootstrapDataLoader {
                     Tool tool = Tool.toolBuilder()
                             .name("Tool " + i)
                             .description("Tool number " + i + " for testing")
-                            .availability(true)
+                            .available(true)
                             .value(BigDecimal.valueOf(10 * i)) // arbitrary value
                             .owner(owner)
                             .build();

@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 public class Tool extends Item {
 
     @Builder(builderMethodName = "toolBuilder")
-    public Tool(Long id, String name, String description, boolean availability, BigDecimal value, User owner,
+    public Tool(Long id, String name, String description, boolean available, BigDecimal value, User owner,
                 LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(id, name, description, availability, value, owner, createdAt, updatedAt);
+        super(id, name, description, available, value, owner, createdAt, updatedAt);
     }
 }

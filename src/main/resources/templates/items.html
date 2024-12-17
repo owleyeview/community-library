@@ -1,0 +1,37 @@
+<!-- src/main/resources/templates/items.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tool Library - Tools</title>
+</head>
+<body>
+<h2>Available Tools</h2>
+<p th:text="'Welcome, ' + ${#authentication.name} + '!'"></p>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Tool Name</th>
+        <th>Description</th>
+        <th>Value</th>
+        <th>Owner</th>
+        <th>Available</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${itemlist}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.name}"></td>
+        <td th:text="${item.description}"></td>
+        <td th:text="${item.value}"></td>
+        <td th:text="${item.ownerId}"></td>
+        <td th:text="${item.available} ? 'Yes' : 'No'"></td>
+    </tr>
+    </tbody>
+</table>
+
+<hr/>
+<a th:href="@{/logout}">Logout</a>
+</body>
+</html>

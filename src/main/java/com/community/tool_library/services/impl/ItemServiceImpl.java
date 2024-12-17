@@ -18,11 +18,13 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
 
     private final UserRepository userRepository;
-    private ItemRepository itemRepository;
-    private UserService userService;
+    private final ItemRepository itemRepository;
+    private final UserService userService;
 
-    public ItemServiceImpl(UserRepository userRepository) {
+    public ItemServiceImpl(UserRepository userRepository, ItemRepository itemRepository, UserService userService) {
         this.userRepository = userRepository;
+        this.itemRepository = itemRepository;
+        this.userService = userService;
     }
 
     @Override

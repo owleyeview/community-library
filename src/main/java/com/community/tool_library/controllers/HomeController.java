@@ -10,8 +10,5 @@ public class HomeController {
     public String landingPage() {
         return "landing";
     }
-     @GetMapping("/register")
-    public String registerPage() {
-         return "register";
-     }
+
 }

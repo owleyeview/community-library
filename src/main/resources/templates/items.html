@@ -1,33 +1,35 @@
 <!-- src/main/resources/templates/items.html -->
 <!DOCTYPE html>
-<html lang="en" data-theme="light" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Community Item Library</title>
-    <!-- Include Pico CSS via CDN -->
-    <link rel="stylesheet" href="/static/css/pico.jade.min.css" />
+    <title>Pleasant Vista Community Tool Library</title>
+    <link rel="stylesheet" href="/css/pico.jade.min.css" />
 </head>
 <body>
 <header class="container">
     <nav>
         <ul>
-            <li><strong>Community Item Library</strong></li>
+            <li><strong>Pleasant Vista Community Tool Library</strong></li>
         </ul>
         <ul>
+            <li th:if="${#authentication.authorities.?[authority == 'ROLE_ADMIN']}">
+                <a th:href="@{/admin}">Admin Page</a>
+            </li>
             <li><a th:href="@{/logout}">Logout</a></li>
         </ul>
     </nav>
 </header>
 
 <main class="container">
-    <h2>Available Items</h2>
+    <h2>Available Tools</h2>
     <p th:text="'Welcome, ' + ${#authentication.name} + '!'"></p>
 
     <table>
         <thead>
         <tr>
             <th>ID</th>
-            <th>Item Name</th>
+            <th>Tool Name</th>
             <th>Description</th>
             <th>Value</th>
             <th>Owner</th>

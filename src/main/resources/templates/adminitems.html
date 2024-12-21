@@ -1,50 +1,49 @@
-<!-- src/main/resources/templates/items.html -->
+<!-- src/main/resources/templates/adminitems.html -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Pleasant Vista Community Tool Library</title>
+    <title>Admin - Items</title>
     <link rel="stylesheet" href="/css/pico.jade.min.css" />
 </head>
 <body>
 <header class="container">
     <nav>
         <ul>
-            <li><strong>Pleasant Vista Community Tool Library</strong></li>
+            <li><strong>Pleasant Vista Community Tool Library (Admin)</strong></li>
         </ul>
         <ul>
-            <li sec:authorize="hasRole('ROLE_ADMIN')">
-                <a th:href="@{/admin}">Admin Page</a>
-            </li>
+            <li><a th:href="@{/admin/adminusers}">Users</a></li>
             <li><a th:href="@{/logout}">Logout</a></li>
         </ul>
     </nav>
 </header>
 
 <main class="container">
-    <p th:text="'Welcome, ' + ${#authentication.name} + '!'"></p>
-
-    <!-- Search Box -->
-    <form th:action="@{/items}" method="get">
+    <h2>All Items (Admin)</h2>
+    <form th:action="@{/admin/adminitems}" method="get">
         <input type="text" name="q" placeholder="Search items..." />
         <button type="submit">Search</button>
     </form>
 
-    <h2>Available Tools</h2>
     <table>
         <thead>
         <tr>
+            <th>ID</th>
             <th>Tool Name</th>
             <th>Description</th>
             <th>Value</th>
+            <th>Owner ID</th>
             <th>Available</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="item : ${itemlist}">
-            <td><a th:href="@{/items/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+            <td><a th:href="@{/admin/adminitems/{id}(id=${item.id})}" th:text="${item.id}"></a></td>
+            <td th:text="${item.name}"></td>
             <td th:text="${item.description}"></td>
             <td th:text="${item.value}"></td>
+            <td><a th:href="@{/admin/adminusers/{ownerId}(ownerId=${item.ownerId})}" th:text="${item.ownerId}"></a></td>
             <td th:text="${item.available} ? 'Yes' : 'No'"></td>
         </tr>
         </tbody>

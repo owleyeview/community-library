@@ -1,0 +1,29 @@
+<!-- src/main/resources/templates/admin.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Pleasant Vista Community Tool Library (Admin)</title>
+    <link rel="stylesheet" href="/css/pico.jade.min.css" />
+</head>
+<body>
+<header class="container">
+    <nav>
+        <ul>
+            <li><strong>Pleasant Vista Community Tool Library (Admin)</strong></li>
+        </ul>
+        <ul>
+            <li><a th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <h2>Admin Dashboard</h2>
+    <ul>
+        <li><a th:href="@{/admin/adminitems}">Items</a></li>
+        <li><a th:href="@{/admin/adminusers}">Users</a></li>
+    </ul>
+</main>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.community.tool_library.config;
 
+import com.community.tool_library.security.CustomLoginSuccessHandler;
 import com.community.tool_library.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +22,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, CustomLoginSuccessHandler loginSuccessHandler) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/","/register","/login", "/css/**", "/js/**").permitAll()
@@ -31,6 +32,7 @@ public class WebSecurityConfig {
                 .formLogin(form -> form
                     //.loginPage("/login")  // Uncomment this line to use a custom login page
                     .defaultSuccessUrl("/items", true)
+                    .successHandler(loginSuccessHandler)
                     .permitAll()
                 )
                 .logout(logout -> logout.permitAll());

@@ -1,0 +1,49 @@
+<!-- src/main/resources/templates/adminusers.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin - Users</title>
+    <link rel="stylesheet" href="/css/pico.jade.min.css" />
+</head>
+<body>
+<header class="container">
+    <nav>
+        <ul>
+            <li><strong>Pleasant Vista Community Tool Library (Admin)</strong></li>
+        </ul>
+        <ul>
+            <li><a th:href="@{/admin/adminitems}">Items</a></li>
+            <li><a th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <h2>All Users (Admin)</h2>
+    <form th:action="@{/admin/adminusers}" method="get">
+        <input type="text" name="q" placeholder="Search users..." />
+        <button type="submit">Search</button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${userlist}">
+            <td><a th:href="@{/admin/adminusers/{id}(id=${user.id})}" th:text="${user.id}"></a></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.role}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

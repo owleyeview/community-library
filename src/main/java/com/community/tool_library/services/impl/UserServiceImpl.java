@@ -1,5 +1,6 @@
 package com.community.tool_library.services.impl;
 
+import com.community.tool_library.dtos.AdminUserDetailDTO;
 import com.community.tool_library.dtos.UserDTO;
 import com.community.tool_library.dtos.UserRegistrationDTO;
 import com.community.tool_library.models.User;
@@ -9,6 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -43,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO viewUserProfile(Long userId) {
+    public UserDTO getUser(Long userId) {
         User user = getUserEntity(userId);
         return mapToDTO(user);
     }
@@ -66,6 +70,13 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long userId) {
         // Role check is handled by @PreAuthorize annotation
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

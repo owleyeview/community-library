@@ -66,15 +66,30 @@ public class AdminController {
         // Fetch user entity
         User user = userService.getUserEntity(id);
         // Convert to AdminUserDetailDTO
-        AdminUserDetailDTO adminUserDetail = new AdminUserDetailDTO(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getRole(),
-                user.getLastLogin(),
-                user.getCreatedAt()
-        );
+        AdminUserDetailDTO adminUserDetail = userService.getUserForAdmin(id);
         model.addAttribute("user", adminUserDetail);
         return "adminuserdetail";
+    }
+
+    @GetMapping("/adminusers/{id}/edit")
+    public String editUserForm(@PathVariable Long id, Model model) {
+        AdminUserDetailDTO userDto = userService.getUserForAdmin(id);
+        model.addAttribute("user", userDto);
+        return "adminuseredit";
+    }
+
+    @PostMapping("/adminusers/{id}/edit")
+    public String updateUser(
+            @PathVariable Long id,
+            @ModelAttribute AdminUserDetailDTO userDto
+    ) {
+        userService.adminUpdateUser(userDto);
+        return "redirect:/admin/adminusers/" + id;
+    }
+
+    @PostMapping("/adminusers/{id}/delete")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "redirect:/admin/adminusers";
     }
 }

@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Admin User Detail</title>
+    <!-- Pico CSS -->
     <link rel="stylesheet" href="/css/pico.jade.min.css" />
 </head>
 <body>
+
 <header class="container">
     <nav>
         <ul>
@@ -21,14 +23,70 @@
 </header>
 
 <main class="container">
-    <h2 th:text="${user.username}"></h2>
-    <p><strong>User ID:</strong> <span th:text="${user.id}"></span></p>
-    <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
-    <p><strong>Role:</strong> <span th:text="${user.role}"></span></p>
-    <p><strong>Created At:</strong> <span th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
-    <p><strong>Last Login:</strong>
-        <span th:text="${user.lastLogin != null ? #temporals.format(user.lastLogin, 'yyyy-MM-dd HH:mm:ss') : 'Never'}"></span>
+    <!-- User details -->
+    <h2 th:text="${user.username}">Username</h2>
+
+    <p><strong>User ID:</strong> <span th:text="${user.id}">1</span></p>
+    <p><strong>Email:</strong> <span th:text="${user.email}">user@example.com</span></p>
+    <p><strong>Role:</strong> <span th:text="${user.role}">ADMIN</span></p>
+    <p>
+        <strong>Created At:</strong>
+        <span th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2024-12-25 12:00:00</span>
     </p>
+    <p>
+        <strong>Last Login:</strong>
+        <span th:text="${user.lastLogin != null ? #temporals.format(user.lastLogin, 'yyyy-MM-dd HH:mm:ss') : 'Never'}">Never</span>
+    </p>
+
+    <!-- Action buttons -->
+    <div style="margin-top: 2rem;">
+        <!-- Edit Button as a <button> -->
+        <button class="secondary"
+                type="button"
+                th:onclick="|window.location.href='@{/admin/adminusers/{id}/edit(id=${user.id})}'|">
+            Edit
+        </button>
+
+        <!-- Delete Button (opens modal) -->
+        <button class="outline contrast"
+                data-target="deleteModal"
+                onclick="toggleModal(event)">
+            Delete
+        </button>
+    </div>
+
 </main>
+
+<!-- Delete Confirmation Modal -->
+<dialog id="deleteModal">
+    <article>
+        <header>
+            <!-- Close icon -->
+            <button aria-label="Close"
+                    data-target="deleteModal"
+                    onclick="toggleModal(event)">
+            </button>
+            <h3>Confirm Deletion</h3>
+        </header>
+
+        <p>Are you sure you want to delete this user?</p>
+
+        <footer>
+            <!-- Cancel button closes modal -->
+            <button class="secondary"
+                    data-target="deleteModal"
+                    onclick="toggleModal(event)">
+                Cancel
+            </button>
+            <!-- The form that deletes the user -->
+            <form th:action="@{/admin/adminusers/{id}/delete(id=${user.id})}" method="post">
+                <button type="submit" class="contrast">Delete</button>
+            </form>
+        </footer>
+    </article>
+</dialog>
+
+<!-- Include the official Pico modal script (adapted) -->
+<script src="/js/modal.js"></script>
 </body>
 </html>

@@ -1,0 +1,72 @@
+<!-- src/main/resources/templates/adminuseredit.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin - Edit User</title>
+    <link rel="stylesheet" href="/css/pico.jade.min.css" />
+</head>
+<body>
+
+<header class="container">
+    <nav>
+        <ul>
+            <li><strong>Pleasant Vista Community Tool Library (Admin)</strong></li>
+        </ul>
+        <ul>
+            <li><a th:href="@{/admin/adminitems}">Items</a></li>
+            <li><a th:href="@{/admin/adminusers}">Users</a></li>
+            <li><a th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <h2>Edit User</h2>
+
+    <form th:action="@{/admin/adminusers/{id}/edit(id=${user.id})}" method="post">
+        <fieldset>
+            <label for="username">
+                Username
+                <input id="username"
+                       name="username"
+                       type="text"
+                       th:value="${user.username}"
+                       required />
+            </label>
+            <label for="email">
+                Email
+                <input id="email"
+                       name="email"
+                       type="email"
+                       th:value="${user.email}"
+                       required />
+            </label>
+            <label for="role">
+                Role
+                <select id="role" name="role">
+                    <option th:value="'USER'"
+                            th:selected="${user.role == 'USER'}">
+                        USER
+                    </option>
+                    <option th:value="'ADMIN'"
+                            th:selected="${user.role == 'ADMIN'}">
+                        ADMIN
+                    </option>
+                </select>
+            </label>
+        </fieldset>
+
+        <div style="margin-top: 1rem;">
+            <button type="submit">Save</button>
+            <button class="secondary"
+                    type="button"
+               th:href="|window.location.href='@{/admin/adminusers/{id}(id=${user.id})}'|">
+                Cancel
+            </button>
+        </div>
+    </form>
+</main>
+
+</body>
+</html>

@@ -14,8 +14,11 @@ public interface UserService {
 
     UserDTO getUser(Long userId);
 
-    //  replace with Spring Security role check
-    boolean isAdmin(Long userId);
+    UserDTO updateUser(UserDTO userDTO);
+
+    AdminUserDetailDTO getUserForAdmin(Long userId);
+
+    AdminUserDetailDTO adminUpdateUser(AdminUserDetailDTO userDTO);
 
     @PreAuthorize("hasRole('ADMIN')")
     void setAdminRole(Long userId);
@@ -26,6 +29,5 @@ public interface UserService {
     @PreAuthorize("hasRole('ADMIN')")
     List<UserDTO> getAllUsers();
 
-    @PreAuthorize("hasRole('ADMIN') or #userId == principal.id")
     User getUserEntity(Long userId);
 }

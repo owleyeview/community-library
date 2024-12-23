@@ -8,6 +8,7 @@ import com.community.tool_library.repositories.ItemRepository;
 import com.community.tool_library.repositories.UserRepository;
 import com.community.tool_library.services.ItemService;
 import com.community.tool_library.services.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -118,7 +119,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void validateOwnership(Item item, Long userId) {
-        if (!item.getOwner().getId().equals(userId) && !userService.isAdmin(userId)) {
+        if (!item.getOwner().getId().equals(userId)
+                && SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .noneMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             throw new RuntimeException("Only the owner or an admin can perform this action.");
         }
     }

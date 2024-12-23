@@ -53,9 +53,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isAdmin(Long userId) {
+    public UserDTO updateUser(UserDTO userDTO) {
+        User user = getUserEntity(userDTO.id());
+        user.setUsername(userDTO.username());
+        user.setEmail(userDTO.email());
+        User updatedUser = userRepository.save(user);
+        return mapToDTO(updatedUser);
+    }
+
+    @Override
+    public AdminUserDetailDTO getUserForAdmin(Long userId) {
         User user = getUserEntity(userId);
-        return user.getRole() != null && user.getRole().equalsIgnoreCase("ADMIN");
+        return mapToAdminUserDetailDTO(user);
+    }
+
+    @Override
+    public AdminUserDetailDTO adminUpdateUser(AdminUserDetailDTO userDTO) {
+        User user = getUserEntity(userDTO.id());
+        user.setUsername(userDTO.username());
+        user.setEmail(userDTO.email());
+        user.setRole(userDTO.role());
+        User updatedUser = userRepository.save(user);
+        return mapToAdminUserDetailDTO(updatedUser);
     }
 
     @Override
@@ -99,6 +118,17 @@ public class UserServiceImpl implements UserService {
                 user.getUsername(),
                 user.getEmail(),
                 user.getRole()
+        );
+    }
+
+    private AdminUserDetailDTO mapToAdminUserDetailDTO(User user) {
+        return new AdminUserDetailDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole(),
+                user.getLastLogin(),
+                user.getCreatedAt()
         );
     }
 

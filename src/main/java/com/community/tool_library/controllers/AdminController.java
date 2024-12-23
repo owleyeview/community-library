@@ -1,6 +1,6 @@
 package com.community.tool_library.controllers;
 
-import com.community.tool_library.dtos.AdminUserDetailDTO;
+import com.community.tool_library.dtos.AdminViewUserDTO;
 import com.community.tool_library.dtos.ItemDTO;
 import com.community.tool_library.dtos.UserDTO;
 import com.community.tool_library.models.User;
@@ -66,14 +66,14 @@ public class AdminController {
         // Fetch user entity
         User user = userService.getUserEntity(id);
         // Convert to AdminUserDetailDTO
-        AdminUserDetailDTO adminUserDetail = userService.getUserForAdmin(id);
+        AdminViewUserDTO adminUserDetail = userService.getUserForAdmin(id);
         model.addAttribute("user", adminUserDetail);
         return "adminuserdetail";
     }
 
     @GetMapping("/adminusers/{id}/edit")
     public String editUserForm(@PathVariable Long id, Model model) {
-        AdminUserDetailDTO userDto = userService.getUserForAdmin(id);
+        AdminViewUserDTO userDto = userService.getUserForAdmin(id);
         model.addAttribute("user", userDto);
         return "adminuseredit";
     }
@@ -81,7 +81,7 @@ public class AdminController {
     @PostMapping("/adminusers/{id}/edit")
     public String updateUser(
             @PathVariable Long id,
-            @ModelAttribute AdminUserDetailDTO userDto
+            @ModelAttribute AdminViewUserDTO userDto
     ) {
         userService.adminUpdateUser(userDto);
         return "redirect:/admin/adminusers/" + id;

@@ -1,6 +1,5 @@
 package com.community.tool_library.config;
 
-import com.community.tool_library.models.AdminUser;
 import com.community.tool_library.models.Tool;
 import com.community.tool_library.models.User;
 import com.community.tool_library.repositories.ItemRepository;
@@ -26,11 +25,11 @@ public class BootstrapDataLoader {
             // Only runs if no users exist in the database
             if (userRepository.count() == 0)  {
                 // Create Admin user
-                AdminUser admin = AdminUser.adminBuilder()
+                User admin = User.builder()
                         .username("admin")
                         .password(passwordEncoder.encode("admin123"))
                         .email("admin@toolibrary.com")
-                        .role("ADMIN") // for clarity, though DiscriminatorValue("ADMIN") also does this
+                        .role("ADMIN")
                         .build();
                 userRepository.save(admin);
 
@@ -41,7 +40,7 @@ public class BootstrapDataLoader {
                             .username("user" + i)
                             .password(passwordEncoder.encode("user" + i + "Pass"))
                             .email("user" + i + "@toolibrary.com")
-                            .role("USER") // role is handled by @DiscriminatorColumn
+                            .role("USER")
                             .build();
                     users.add(user);
                 }

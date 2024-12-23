@@ -2,7 +2,7 @@ package com.community.tool_library.dtos;
 
 import java.time.LocalDateTime;
 
-public record AdminUserDetailDTO(
+public record AdminViewUserDTO(
         Long id,
         String username,
         String email,

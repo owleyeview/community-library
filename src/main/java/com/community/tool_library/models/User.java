@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "USER")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -38,7 +36,7 @@ public class User {
     @Email
     private String email;
 
-    @Column(insertable = false, updatable = false)
+    @Column(nullable = false)
     private String role;
 
     private LocalDateTime lastLogin;

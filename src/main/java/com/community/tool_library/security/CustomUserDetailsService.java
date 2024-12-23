@@ -25,8 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new RuntimeException("User not found");
         }
 
-        // System.out.printf("User: %s has role: %s", user.getUsername(), user.getRole());
-
         // Transform User to UserDetails
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),

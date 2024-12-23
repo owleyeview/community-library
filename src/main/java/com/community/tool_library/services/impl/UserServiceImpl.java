@@ -1,6 +1,6 @@
 package com.community.tool_library.services.impl;
 
-import com.community.tool_library.dtos.AdminUserDetailDTO;
+import com.community.tool_library.dtos.AdminViewUserDTO;
 import com.community.tool_library.dtos.UserDTO;
 import com.community.tool_library.dtos.UserRegistrationDTO;
 import com.community.tool_library.models.User;
@@ -62,13 +62,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AdminUserDetailDTO getUserForAdmin(Long userId) {
+    public AdminViewUserDTO getUserForAdmin(Long userId) {
         User user = getUserEntity(userId);
         return mapToAdminUserDetailDTO(user);
     }
 
     @Override
-    public AdminUserDetailDTO adminUpdateUser(AdminUserDetailDTO userDTO) {
+    public AdminViewUserDTO adminUpdateUser(AdminViewUserDTO userDTO) {
         User user = getUserEntity(userDTO.id());
         user.setUsername(userDTO.username());
         user.setEmail(userDTO.email());
@@ -87,7 +87,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long userId) {
-        // Role check is handled by @PreAuthorize annotation
+        User currentUser = getAuthenticatedUser();
+        if (currentUser.getId().equals(userId)) {
+            throw new RuntimeException("Admin cannot delete their own account");
+        }
         userRepository.deleteById(userId);
     }
 
@@ -121,8 +124,8 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    private AdminUserDetailDTO mapToAdminUserDetailDTO(User user) {
-        return new AdminUserDetailDTO(
+    private AdminViewUserDTO mapToAdminUserDetailDTO(User user) {
+        return new AdminViewUserDTO(
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),

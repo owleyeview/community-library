@@ -1,0 +1,81 @@
+<!-- src/main/resources/templates/adminitemedit.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin - Edit Item</title>
+    <link rel="stylesheet" href="/css/pico.jade.min.css" />
+</head>
+<body>
+<header class="container">
+    <nav>
+        <ul>
+            <li><strong>Pleasant Vista Community Tool Library (Admin)</strong></li>
+        </ul>
+        <ul>
+            <li><a th:href="@{/admin/adminitems}">Back to Items</a></li>
+            <li><a th:href="@{/admin/adminusers}">Users</a></li>
+            <li><a th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <h2>Edit Item</h2>
+
+    <form th:action="@{/admin/adminitems/{id}/edit(id=${item.id})}" method="post">
+        <fieldset>
+            <label for="name">
+                Name
+                <input id="name"
+                       name="name"
+                       type="text"
+                       th:value="${item.name}"
+                       required />
+            </label>
+
+            <label for="description">
+                Description
+                <textarea id="description" name="description"
+                          rows="3" cols="50"
+                          th:text="${item.description}"></textarea>
+            </label>
+
+            <label for="value">
+                Value
+                <input id="value"
+                       name="value"
+                       type="text"
+                       th:value="${item.value}"
+                       required />
+            </label>
+
+            <label for="available">
+                Available
+                <!-- drop down for available -->
+                <select id="available" name="available">
+                    <option th:value="true"
+                            th:selected="${item.available}">Yes</option>
+                    <option th:value="false"
+                            th:selected="${!item.available}">No</option>
+                </select>
+                <!-- checkbox option for available
+                <input id="available"
+                       name="available"
+                       type="checkbox"
+                       th:checked="${item.available}" />
+                -->
+            </label>
+        </fieldset>
+
+        <div style="margin-top: 1rem;">
+            <button type="submit">Save</button>
+            <button class="secondary" type="button"
+                    th:onclick="|window.location.href='@{/admin/adminitems/{id}(id=${item.id})}'|">
+                Cancel
+            </button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

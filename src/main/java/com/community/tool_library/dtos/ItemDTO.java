@@ -1,10 +1,12 @@
 package com.community.tool_library.dtos;
 
+import java.math.BigDecimal;
+
 public record ItemDTO (
      Long id,
      String name,
      String description,
      boolean available,
-     String value,
+     BigDecimal value,
      Long ownerId
 ) {}

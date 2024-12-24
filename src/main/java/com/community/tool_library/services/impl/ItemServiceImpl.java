@@ -49,7 +49,7 @@ public class ItemServiceImpl implements ItemService {
         item.setName(itemDTO.name());
         item.setDescription(itemDTO.description());
         item.setAvailable(itemDTO.available());
-        item.setValue(new BigDecimal(itemDTO.value()));
+        item.setValue(itemDTO.value());
         Item updatedItem = itemRepository.save(item);
         return mapToDTO(updatedItem);
     }
@@ -102,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
                 .name(dto.name())
                 .description(dto.description())
                 .available(dto.available())
-                .value(new BigDecimal(dto.value()))
+                .value(dto.value())
                 .owner(owner)
                 .build();
     }
@@ -113,7 +113,7 @@ public class ItemServiceImpl implements ItemService {
                 item.getName(),
                 item.getDescription(),
                 item.isAvailable(),
-                item.getValue().toPlainString(),
+                item.getValue(),
                 item.getOwner().getId()
         );
     }

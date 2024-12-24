@@ -22,13 +22,58 @@
 
 <main class="container">
     <h2 th:text="${item.name}"></h2>
+
     <p><strong>ID:</strong> <span th:text="${item.id}"></span></p>
     <p><strong>Description:</strong> <span th:text="${item.description}"></span></p>
     <p><strong>Value:</strong> <span th:text="${item.value}"></span></p>
     <p><strong>Owner:</strong>
-        <a th:href="@{/admin/adminusers/{ownerId}(ownerId=${item.ownerId})}" th:text="${item.ownerId}"></a>
+        <a th:href="@{/admin/adminusers/{ownerId}(ownerId=${item.ownerId})}"
+           th:text="${item.ownerId}"></a>
     </p>
     <p><strong>Available:</strong> <span th:text="${item.available} ? 'Yes' : 'No'"></span></p>
+
+    <!-- Edit and Delete Buttons -->
+    <div style="margin-top: 2rem;">
+        <!-- Edit Button -->
+        <button class="secondary"
+                type="button"
+                th:onclick="|window.location.href='@{/admin/adminitems/{id}/edit(id=${item.id})}'|">
+            Edit
+        </button>
+
+        <!-- Delete Button opens modal -->
+        <button class="outline contrast"
+                data-target="deleteModal"
+                onclick="toggleModal(event)">
+            Delete
+        </button>
+    </div>
 </main>
+
+<!-- Delete Confirmation Modal -->
+<dialog id="deleteModal">
+    <article>
+        <header>
+            <button aria-label="Close"
+                    data-target="deleteModal"
+                    onclick="toggleModal(event)">
+            </button>
+            <h3>Confirm Deletion</h3>
+        </header>
+        <p>Are you sure you want to delete this item?</p>
+        <footer>
+            <button class="secondary"
+                    data-target="deleteModal"
+                    onclick="toggleModal(event)">
+                Cancel
+            </button>
+            <form th:action="@{/admin/adminitems/{id}/delete(id=${item.id})}" method="post">
+                <button type="submit" class="contrast">Delete</button>
+            </form>
+        </footer>
+    </article>
+</dialog>
+
+<script src="/js/modal.js"></script>
 </body>
 </html>

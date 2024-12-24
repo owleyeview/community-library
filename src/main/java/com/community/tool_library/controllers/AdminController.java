@@ -70,7 +70,7 @@ public class AdminController {
         model.addAttribute("user", adminUserDetail);
         return "adminuserdetail";
     }
-
+    // User methods
     @GetMapping("/adminusers/{id}/edit")
     public String editUserForm(@PathVariable Long id, Model model) {
         AdminViewUserDTO userDto = userService.getUserForAdmin(id);
@@ -91,5 +91,32 @@ public class AdminController {
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return "redirect:/admin/adminusers";
+    }
+
+    // Item methods
+    @GetMapping("/adminitems/{id}/edit")
+    public String editItemForm(@PathVariable Long id, Model model) {
+        ItemDTO item = itemService.getItem(id);
+        model.addAttribute("item", item);
+        return "adminitemedit";
+    }
+
+    @PostMapping("/adminitems/{id}/edit")
+    public String updateItem(
+            @PathVariable Long id,
+            @ModelAttribute ItemDTO item
+    ) {
+        // could ensure that ownerId is not changed here by setting it to the original value
+
+        // update item; passing a dummy userId for admin
+        itemService.updateItem(item, 0L);
+        return "redirect:/admin/adminitems/" + id;
+    }
+
+    @PostMapping("/adminitems/{id}/delete")
+    public String deleteItem(@PathVariable Long id) {
+        // no need to pass userId; admin will be validated in service
+        itemService.deleteItem(id, 0L);
+        return "redirect:/admin/adminitems";
     }
 }

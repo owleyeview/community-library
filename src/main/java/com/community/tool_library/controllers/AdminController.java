@@ -6,8 +6,10 @@ import com.community.tool_library.dtos.UserDTO;
 import com.community.tool_library.models.User;
 import com.community.tool_library.services.ItemService;
 import com.community.tool_library.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -106,6 +108,7 @@ public class AdminController {
             @PathVariable Long id,
             @ModelAttribute ItemDTO item
     ) {
+
         // could ensure that ownerId is not changed here by setting it to the original value
 
         // update item; passing a dummy userId for admin

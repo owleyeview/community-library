@@ -10,7 +10,9 @@ public interface ItemService {
 
     ItemDTO getItem(Long itemId);
 
-    ItemDTO updateItem(ItemDTO itemDTO, long userId);
+    List<ItemDTO> getItemsByOwnerId(Long id);
+
+    void updateItem(ItemDTO itemDTO, long userId);
 
     void updateAvailability(Long itemId, boolean available);
 
@@ -19,4 +21,6 @@ public interface ItemService {
     List<ItemDTO> searchItems(String query);
 
     Item getItemEntity(Long itemId);
+
+
 }

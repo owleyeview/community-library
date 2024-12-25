@@ -11,7 +11,6 @@ import com.community.tool_library.services.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +42,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDTO updateItem(ItemDTO itemDTO, long userId) {
+    public List<ItemDTO> getItemsByOwnerId(Long id) {
+        return itemRepository.findByOwnerId(id).stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateItem(ItemDTO itemDTO, long userId) {
         Item item = getItemEntity(itemDTO.id());
         validateOwnership(item, userId);
         item.setName(itemDTO.name());
@@ -51,7 +57,7 @@ public class ItemServiceImpl implements ItemService {
         item.setAvailable(itemDTO.available());
         item.setValue(itemDTO.value());
         Item updatedItem = itemRepository.save(item);
-        return mapToDTO(updatedItem);
+        mapToDTO(updatedItem);
     }
 
     @Override

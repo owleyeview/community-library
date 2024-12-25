@@ -10,9 +10,11 @@ public interface LoanService {
 
     LoanDTO returnItem(Long itemId, Long borrowerId);
 
-    List<LoanDTO> getLoansForUser(Long userId);
+    List<LoanDTO> getLoansByUser(Long userId);
 
-    List<LoanDTO> getActiveLoans();
+    List<LoanDTO> getActiveLoansByUser(Long userId);
+
+    List<LoanDTO> getAllActiveLoans();
 
     Loan getLoanEntity(Long loanId);
 }

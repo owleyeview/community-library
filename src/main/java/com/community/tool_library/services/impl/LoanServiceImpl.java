@@ -76,7 +76,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public List<LoanDTO> getLoansForUser(Long userId) {
+    public List<LoanDTO> getLoansByUser(Long userId) {
         List<Loan> loans = loanRepository.findByBorrowerId(userId);
         return loans.stream()
                 .map(this::mapToDTO)
@@ -84,7 +84,15 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public List<LoanDTO> getActiveLoans() {
+    public List<LoanDTO> getActiveLoansByUser(Long userId) {
+        List<Loan> activeLoans = loanRepository.findByBorrowerIdAndReturnedFalse(userId);
+        return activeLoans.stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
+
+    @Override
+    public List<LoanDTO> getAllActiveLoans() {
         List<Loan> activeLoans = loanRepository.findByReturnedFalse();
         return activeLoans.stream()
                 .map(this::mapToDTO)

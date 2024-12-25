@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>My Profile</title>
+    <link rel="stylesheet" href="/css/pico.jade.min.css" />
+</head>
+<body>
+<header class="container">
+    <nav>
+        <ul>
+            <li><strong>Pleasant Vista Tool Library</strong></li>
+        </ul>
+        <ul>
+            <li><a th:href="@{/items}">Items</a></li>
+            <li><a th:href="@{/notifications}">Notifications</a></li>
+            <li><a th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <h2 th:text="'Profile of ' + ${user.username}"></h2>
+
+    <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+    <p><strong>Role:</strong> <span th:text="${user.role}"></span></p>
+    <!--
+    <p><strong>Member Since:</strong>
+        <span th:text="${user.createdAt != null ? #temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm:ss') : 'Never'}"></span>
+    </p>
+    -->
+    <h3>Owned Items</h3>
+    <ul>
+        <li th:each="item : ${ownedItems}"
+            th:text="${item.name}"></li>
+    </ul>
+
+    <h3>Checked Out Items</h3>
+    <ul>
+        <li th:each="loan : ${borrowedLoans}"
+            th:text="'Item ' + ${loan.itemId}"></li>
+    </ul>
+</main>
+</body>
+</html>

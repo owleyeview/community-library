@@ -45,9 +45,12 @@
                 Value
                 <input id="value"
                        name="value"
-                       type="text"
-                       th:value="${item.value}"
-                       required />
+                       type="number"
+                       step="0.01"
+                       min="0"
+                       required
+                       oninput="validateValue(this)" />
+                <small id="value-error" style="display: none;">Please enter a valid value (≥ 0).</small>
             </label>
 
             <label for="available">
@@ -78,4 +81,19 @@
     </form>
 </main>
 </body>
+
+<script>
+    function validateValue(input) {
+        const errorMessage = document.getElementById('value-error');
+
+        if (!input.checkValidity()) {
+            input.setAttribute('aria-invalid', 'true');
+            errorMessage.style.display = 'block';
+        } else {
+            input.setAttribute('aria-invalid', 'false');
+            errorMessage.style.display = 'none';
+        }
+    }
+</script>
+
 </html>

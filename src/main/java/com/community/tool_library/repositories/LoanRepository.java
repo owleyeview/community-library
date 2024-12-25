@@ -14,4 +14,6 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findByReturnedFalse();
 
     Optional<Loan> findByItemIdAndBorrowerIdAndReturnedFalse(Long itemId, Long borrowerId);
+
+    List<Loan> findByBorrowerIdAndReturnedFalse(Long userId);
 }

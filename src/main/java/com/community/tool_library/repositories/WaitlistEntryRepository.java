@@ -13,4 +13,6 @@ public interface WaitlistEntryRepository extends JpaRepository<WaitlistEntry, Lo
     List<WaitlistEntry> findAllByItemIdOrderByCreatedAtAsc(Long itemId);
 
     Optional<WaitlistEntry> findByItemIdAndUserId(Long itemId, Long userId);
+
+    List<WaitlistEntry> findAllByUserId(Long userId);
 }

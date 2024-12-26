@@ -2,6 +2,7 @@ package com.community.tool_library.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,16 +23,15 @@ public class WaitlistEntry {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "item_id", nullable = false)
-    @NotBlank
+    @NotNull
     private Item item;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    @NotBlank
+    @NotNull
     private User user;
 
     @Column(nullable = false, updatable = false)
-    @NotBlank
     @CreationTimestamp
     private LocalDateTime createdAt;
 }

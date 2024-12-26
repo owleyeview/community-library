@@ -13,4 +13,8 @@ public interface WaitlistService {
     WaitlistEntryDTO notifyNextUser(Long itemId);
 
     List<WaitlistEntryDTO> getWaitlistForItem(Long itemId);
+
+    // List<Long> getWaitlistUserIdsByItem(Long itemId);
+
+    List<Long> getWaitlistItemIdsByUser(Long userId);
 }

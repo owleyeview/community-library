@@ -1,6 +1,6 @@
 <!-- src/main/resources/templates/items.html -->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <title>Pleasant Vista Community Tool Library</title>
@@ -38,6 +38,7 @@
             <th>Description</th>
             <th>Value</th>
             <th>Available</th>
+            <th>Action</th> <!-- new -->
         </tr>
         </thead>
         <tbody>
@@ -46,6 +47,35 @@
             <td th:text="${item.description}"></td>
             <td th:text="${item.value}"></td>
             <td th:text="${item.available} ? 'Yes' : 'No'"></td>
+            <td>
+                <!-- Return if user currently borrowed -->
+                <form th:if="${item.borrowedByCurrentUser}"
+                      th:action="@{/items/{id}/return(id=${item.id})}"
+                      method="post">
+                    <button type="submit" class="outline">Return</button>
+                </form>
+
+                <!-- Borrow if item is available & not borrowed by user -->
+                <form th:if="${!item.borrowedByCurrentUser && item.available}"
+                      th:action="@{/items/{id}/borrow(id=${item.id})}"
+                      method="post">
+                    <button type="submit">Borrow</button>
+                </form>
+
+                <!-- If item is not available & user doesn't have it but no hold for user -->
+                <form th:if="${!item.borrowedByCurrentUser && !item.available && !item.currentUserInWaitlist}"
+                      th:action="@{/items/{id}/hold(id=${item.id})}"
+                      method="post">
+                    <button type="submit" class="secondary">Place Hold</button>
+                </form>
+
+                <!-- If user is on waitlist -->
+                <form th:if="${!item.borrowedByCurrentUser && !item.available && item.currentUserInWaitlist}"
+                      th:action="@{/items/{id}/hold/cancel(id=${item.id})}"
+                      method="post">
+                    <button type="submit" class="outline secondary">Cancel Hold</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

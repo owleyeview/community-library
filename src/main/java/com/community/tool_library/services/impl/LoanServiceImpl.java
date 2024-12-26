@@ -26,7 +26,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public LoanDTO checkoutItem(Long itemId, Long borrowerId) {
+    public LoanDTO borrowItem(Long itemId, Long borrowerId) {
         // Get item and validate availability
         Item item = itemService.getItemEntity(itemId);
         if (!item.isAvailable()) {
@@ -88,6 +88,14 @@ public class LoanServiceImpl implements LoanService {
         List<Loan> activeLoans = loanRepository.findByBorrowerIdAndReturnedFalse(userId);
         return activeLoans.stream()
                 .map(this::mapToDTO)
+                .toList();
+    }
+
+    @Override
+    public List<Long> getActiveLoanItemIdsByUser(Long userId) {
+        List<Loan> activeLoans = loanRepository.findByBorrowerIdAndReturnedFalse(userId);
+        return activeLoans.stream()
+                .map(loan -> loan.getItem().getId())
                 .toList();
     }
 

@@ -82,6 +82,15 @@ public class WaitlistServiceImpl implements WaitlistService {
                 .toList();
     }
 
+    @Override
+    public List<Long> getWaitlistItemIdsByUser(Long userId) {
+        List<WaitlistEntry> waitlist = waitlistEntryRepository.findAllByUserId(userId);
+        return waitlist.stream()
+                .map(WaitlistEntry::getItem)
+                .map(Item::getId)
+                .toList();
+    }
+
     // helper methods
     private WaitlistEntryDTO mapToDTO(WaitlistEntry waitlistEntry) {
         return new WaitlistEntryDTO(

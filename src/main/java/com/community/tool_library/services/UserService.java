@@ -14,6 +14,8 @@ public interface UserService {
 
     UserDTO getUser(Long userId);
 
+    Long getUserId(String username);
+
     UserDTO updateUser(UserDTO userDTO);
 
     AdminViewUserDTO getUserForAdmin(Long userId);

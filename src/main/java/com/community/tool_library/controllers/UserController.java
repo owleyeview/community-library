@@ -27,7 +27,8 @@ public class UserController {
 
     @GetMapping("/profile")
     public String profile(Principal principal, Model model) {
-        UserDTO user = userService.getUser(principal.getName());
+        Long userId = userService.getUserId(principal.getName());
+        UserDTO user = userService.getUser(userId);
         List<ItemDTO> ownedItems = itemService.getItemsByOwnerId(user.id());
         List<LoanDTO> borrowedItems = loanService.getActiveLoansByUser(user.id());
         model.addAttribute("user", user);

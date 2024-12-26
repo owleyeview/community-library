@@ -100,6 +100,14 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    public List<LoanDTO> getLoansByItem(Long itemId) {
+        List<Loan> loans = loanRepository.findByItemId(itemId);
+        return loans.stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
+
+    @Override
     public List<LoanDTO> getAllActiveLoans() {
         List<Loan> activeLoans = loanRepository.findByReturnedFalse();
         return activeLoans.stream()

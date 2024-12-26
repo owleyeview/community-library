@@ -32,6 +32,12 @@
     </p>
     <p><strong>Available:</strong> <span th:text="${item.available} ? 'Yes' : 'No'"></span></p>
 
+    <div style="margin-top: 1rem;">
+        <a th:href="@{/admin/adminitems/{id}/report(id=${item.id})}">
+                Loan Report for <span th:text="${item.name}"></span>
+        </a>
+    </div>
+
     <!-- Edit and Delete Buttons -->
     <div style="margin-top: 2rem;">
         <!-- Edit Button -->

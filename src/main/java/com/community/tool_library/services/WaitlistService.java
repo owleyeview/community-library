@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface WaitlistService {
 
-    WaitlistEntryDTO placeHold(Long itemId, Long userId);
+    void placeHold(Long itemId, Long userId);
 
     void cancelHold(Long itemId, Long userId);
 

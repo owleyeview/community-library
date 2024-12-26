@@ -16,6 +16,8 @@ public interface LoanService {
 
     List<Long> getActiveLoanItemIdsByUser(Long userId);
 
+    List<LoanDTO> getLoansByItem(Long itemId);
+
     List<LoanDTO> getAllActiveLoans();
 
     Loan getLoanEntity(Long loanId);

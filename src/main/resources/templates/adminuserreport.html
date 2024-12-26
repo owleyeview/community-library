@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="'Loan History for ' + ${user.username}"></title>
+    <link rel="stylesheet" href="/css/pico.jade.min.css" />
+</head>
+<body>
+
+<header class="container">
+    <nav>
+        <ul>
+            <li><strong>Pleasant Vista Community Tool Library (Admin)</strong></li>
+        </ul>
+        <ul>
+            <li><a th:href="@{/admin/adminitems}">Items</a></li>
+            <li><a th:href="@{/admin/adminusers}">Users</a></li>
+            <li><a th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <!-- Title with Date-Time Stamp for demonstration -->
+    <h2 th:text="'Loan History for ' + ${user.username}"></h2>
+    <p><strong>Report Generated:</strong>
+        <span th:text="${timestamp}">2024-01-01 12:00:00</span>
+    </p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Loan ID</th>
+            <th>Item Name</th>
+            <th>Borrowed On</th>
+            <th>Returned On</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="loan : ${loans}">
+            <td th:text="${loan.id}"></td>
+            <td th:text="${loan.displayValue}">Item Name</td>
+            <td th:text="${#temporals.format(loan.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2024-01-01 12:00:00</td>
+            <td>
+                <span th:if="${loan.returned == true}"
+                      th:text="${#temporals.format(loan.updatedAt, 'yyyy-MM-dd HH:mm:ss')}">2024-01-02 16:00:00</span>
+                <span th:if="${loan.returned == false}">N/A</span>
+            </td>
+            <td th:text="${loan.returned} ? 'Returned' : 'Active'"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

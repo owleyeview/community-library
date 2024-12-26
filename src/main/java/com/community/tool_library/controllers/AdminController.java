@@ -1,10 +1,9 @@
 package com.community.tool_library.controllers;
 
-import com.community.tool_library.dtos.AdminViewUserDTO;
-import com.community.tool_library.dtos.ItemDTO;
-import com.community.tool_library.dtos.UserDTO;
+import com.community.tool_library.dtos.*;
 import com.community.tool_library.models.User;
 import com.community.tool_library.services.ItemService;
+import com.community.tool_library.services.LoanService;
 import com.community.tool_library.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -12,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -20,10 +20,12 @@ public class AdminController {
 
     private final ItemService itemService;
     private final UserService userService;
+    private final LoanService loanService;
 
-    public AdminController(ItemService itemService, UserService userService) {
+    public AdminController(ItemService itemService, UserService userService, LoanService loanService) {
         this.itemService = itemService;
         this.userService = userService;
+        this.loanService = loanService;
     }
 
     @GetMapping
@@ -122,4 +124,70 @@ public class AdminController {
         itemService.deleteItem(id, 0L);
         return "redirect:/admin/adminitems";
     }
+
+    // Report methods
+    @GetMapping("/adminusers/{id}/report")
+    public String userLoanReport(@PathVariable Long id, Model model) {
+        // fetch user info
+        AdminViewUserDTO user = userService.getUserForAdmin(id);
+
+        // fetch all loans for user
+        List<LoanDTO> loans = loanService.getLoansByUser(id);
+
+        // convert to LoanReportDTO, adding item name
+        List<LoanReportDTO> loanReports = loans.stream()
+                .map(loan -> {
+                    ItemDTO item = itemService.getItem(loan.itemId());
+                    return new LoanReportDTO(
+                            loan.id(),
+                            item.name(),
+                            loan.createdAt(),
+                            loan.updatedAt(),
+                            loan.returned()
+                    );
+                }).toList();
+
+        // current timestamp for display
+        String timestamp = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        model.addAttribute("user", user);
+        model.addAttribute("loans", loanReports);
+        model.addAttribute("timestamp", timestamp);
+
+        return "adminuserreport";
+    }
+
+    @GetMapping("/adminitems/{id}/report")
+    public String itemLoanReport(@PathVariable Long id, Model model) {
+        // fetch item info for the name
+        ItemDTO item = itemService.getItem(id);
+
+        // fetch all loans for item
+        List<LoanDTO> loans = loanService.getLoansByItem(id);
+
+        // convert to LoanReportDTO, adding item name
+        List<LoanReportDTO> loanReports = loans.stream()
+                .map(loan -> {
+                    UserDTO user = userService.getUser(loan.borrowerId());
+                    return new LoanReportDTO(
+                            loan.id(),
+                            user.username(),
+                            loan.createdAt(),
+                            loan.updatedAt(),
+                            loan.returned()
+                    );
+                }).toList();
+
+        // current timestamp for display
+        String timestamp = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+
+        model.addAttribute("item", item);
+        model.addAttribute("loans", loanReports);
+        model.addAttribute("timestamp", timestamp);
+
+        return "adminitemreport";
+    }
+
+
 }

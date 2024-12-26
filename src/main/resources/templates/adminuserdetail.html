@@ -28,7 +28,7 @@
 
     <p><strong>User ID:</strong> <span th:text="${user.id}">1</span></p>
     <p><strong>Email:</strong> <span th:text="${user.email}">user@example.com</span></p>
-    <p><strong>Role:</strong> <span th:text="${user.role}">ADMIN</span></p>
+    <p><strong>Role:</strong> <span th:text="${user.role}">USER</span></p>
     <p>
         <strong>Created At:</strong>
         <span th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2024-12-25 12:00:00</span>
@@ -37,6 +37,12 @@
         <strong>Last Login:</strong>
         <span th:text="${user.lastLogin != null ? #temporals.format(user.lastLogin, 'yyyy-MM-dd HH:mm:ss') : 'Never'}">Never</span>
     </p>
+
+    <div style="margin-top: 1rem;">
+        <a th:href="@{/admin/adminusers/{id}/report(id=${user.id})}">
+                Loan History for <span th:text="${user.username}"></span>
+        </a>
+    </div>
 
     <!-- Action buttons -->
     <div style="margin-top: 2rem;">

@@ -27,7 +27,7 @@ public class WaitlistServiceImpl implements WaitlistService {
     }
 
     @Override
-    public WaitlistEntryDTO placeHold(Long itemId, Long userId) {
+    public void placeHold(Long itemId, Long userId) {
         // Validate item and user exist
         Item item = itemService.getItemEntity(itemId);
         User user = userService.getUserEntity(userId);
@@ -46,7 +46,7 @@ public class WaitlistServiceImpl implements WaitlistService {
 
         // Save waitlist entry
         WaitlistEntry saved = waitlistEntryRepository.save(waitlistEntry);
-        return mapToDTO(saved);
+        mapToDTO(saved);
     }
 
     @Override

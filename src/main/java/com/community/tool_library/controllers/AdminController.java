@@ -55,12 +55,12 @@ public class AdminController {
 
     @GetMapping("/adminusers")
     public String adminUsers(@RequestParam(name="q", required=false) String query, Model model) {
-        List<UserDTO> users;
-        //if (query != null && !query.trim().isEmpty()) {
-        //    users = userService.searchUsers(query.trim());
-        //} else {
+        List<AdminViewUserDTO> users;
+        if (query != null && !query.trim().isEmpty()) {
+            users = userService.searchUsers(query.trim());
+        } else {
             users = userService.getAllUsers();
-        //}
+        }
         model.addAttribute("userlist", users);
         return "adminusers";
     }

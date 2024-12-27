@@ -1,6 +1,7 @@
 package com.community.tool_library.services;
 
 import com.community.tool_library.dtos.AdminViewUserDTO;
+import com.community.tool_library.dtos.ItemDTO;
 import com.community.tool_library.dtos.UserDTO;
 import com.community.tool_library.dtos.UserRegistrationDTO;
 import com.community.tool_library.models.User;
@@ -29,7 +30,10 @@ public interface UserService {
     void deleteUser(Long userId);
 
     @PreAuthorize("hasRole('ADMIN')")
-    List<UserDTO> getAllUsers();
+    List<AdminViewUserDTO> getAllUsers();
+
+    @PreAuthorize("hasRole('ADMIN')")
+    List<AdminViewUserDTO> searchUsers(String query);
 
     User getUserEntity(Long userId);
 }

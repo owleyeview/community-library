@@ -60,25 +60,24 @@ public class ItemController {
             boolean userHasIt = userActiveLoans.contains(item.id());
             boolean userOnWaitlist = userWaitlistItems.contains(item.id());
 
-            enrichedItems.add(new ItemStatusDTO(item.id(),
-                    item.name(),
-                    item.description(),
-                    item.available(),
-                    item.value(),
-                    item.ownerId(),
-                    userHasIt,
-                    userOnWaitlist)
-            );
+            enrichedItems.add(addStatusFields(item, userHasIt, userOnWaitlist));
         }
         model.addAttribute("itemlist", enrichedItems);
         return "items";
     }
 
     @GetMapping("/items/{id}")
-    public String itemDetails(@PathVariable Long id, Model model) {
+    public String itemDetails(@PathVariable Long id, Principal principal, Model model) {
+        Long currentUserId = userService.getUserId(principal.getName());
 
         ItemDTO item = itemService.getItem(id);
-        model.addAttribute("item", item);
+
+        boolean borrowedByCurrentUser = loanService.getActiveLoanItemIdsByUser(currentUserId).contains(id);
+        boolean currentUserInWaitlist = waitlistService.getWaitlistItemIdsByUser(currentUserId).contains(id);
+
+        ItemStatusDTO enrichedItem = addStatusFields(item, borrowedByCurrentUser, currentUserInWaitlist);
+
+        model.addAttribute("item", enrichedItem);
         return "itemdetail";
     }
 
@@ -108,5 +107,18 @@ public class ItemController {
         Long userId = userService.getUserId(principal.getName());
         waitlistService.cancelHold(id, userId);
         return "redirect:/items";
+    }
+
+    // helper methods
+    private ItemStatusDTO addStatusFields(ItemDTO item, boolean userHasIt, boolean userOnWaitlist) {
+        return new ItemStatusDTO(item.id(),
+                item.name(),
+                item.description(),
+                item.available(),
+                item.value(),
+                item.ownerId(),
+                userHasIt,
+                userOnWaitlist
+        );
     }
 }

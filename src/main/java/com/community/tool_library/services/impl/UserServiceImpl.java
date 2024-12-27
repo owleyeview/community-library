@@ -101,9 +101,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getAllUsers() {
+    public List<AdminViewUserDTO> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(this::mapToDTO)
+                .map(this::mapToAdminUserDetailDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AdminViewUserDTO> searchUsers(String query) {
+        return userRepository.findByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrRoleContainingIgnoreCase(query, query, query).stream()
+                .map(this::mapToAdminUserDetailDTO)
                 .collect(Collectors.toList());
     }
 

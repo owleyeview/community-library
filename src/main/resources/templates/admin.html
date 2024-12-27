@@ -14,7 +14,12 @@
         </ul>
         <ul>
             <li><a th:href="@{/items}">Home</a></li>
-            <li><a th:href="@{/logout}">Logout</a></li>
+            <li>
+                <a href="#" onclick="document.getElementById('logout-form').submit(); return false;">Logout</a>
+                <form id="logout-form" th:action="@{/logout}" method="post" style="display: none;">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                </form>
+            </li>
         </ul>
     </nav>
 </header>

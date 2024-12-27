@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Login - Pleasant Vista Community Tool Library</title>
+    <link rel="stylesheet" href="/css/pico.jade.min.css" />
+</head>
+<body>
+<header class="container">
+    <nav>
+        <ul>
+            <li><strong>Pleasant Vista Community Tool Library</strong></li>
+        </ul>
+    </nav>
+</header>
+<main class="container">
+    <h2>Login</h2>
+    <form th:action="@{/login}" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required autofocus />
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+
+        <button type="submit">Sign in</button>
+
+        <div th:if="${param.error}" class="error" style="color: #964a50">
+            Invalid username or password.
+        </div>
+        <div th:if="${param.logout}" class="message">
+            You have been logged out successfully.
+        </div>
+    </form>
+</main>
+</body>
+</html>

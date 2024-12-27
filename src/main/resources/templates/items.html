@@ -13,6 +13,7 @@
             <li><strong>Pleasant Vista Community Tool Library</strong></li>
         </ul>
         <ul>
+            <li><a th:href="@{/profile}">Profile</a></li>
             <li sec:authorize="hasRole('ROLE_ADMIN')">
                 <a th:href="@{/admin}">Admin Page</a>
             </li>
@@ -38,7 +39,7 @@
             <th>Description</th>
             <th>Value</th>
             <th>Available</th>
-            <th>Action</th> <!-- new -->
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>

@@ -1,45 +1,147 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>My Profile</title>
+    <title>Pleasant Vista Community Tool Library - Profile</title>
     <link rel="stylesheet" href="/css/pico.jade.min.css" />
 </head>
 <body>
 <header class="container">
     <nav>
         <ul>
-            <li><strong>Pleasant Vista Tool Library</strong></li>
+            <li><strong>Pleasant Vista Community Tool Library</strong></li>
         </ul>
         <ul>
-            <li><a th:href="@{/items}">Items</a></li>
-            <li><a th:href="@{/notifications}">Notifications</a></li>
+            <li><a th:href="@{/items}">Home</a></li>
             <li><a th:href="@{/logout}">Logout</a></li>
         </ul>
     </nav>
 </header>
 
 <main class="container">
-    <h2 th:text="'Profile of ' + ${user.username}"></h2>
 
-    <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
-    <p><strong>Role:</strong> <span th:text="${user.role}"></span></p>
-    <!--
-    <p><strong>Member Since:</strong>
-        <span th:text="${user.createdAt != null ? #temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm:ss') : 'Never'}"></span>
-    </p>
-    -->
-    <h3>Owned Items</h3>
-    <ul>
-        <li th:each="item : ${ownedItems}"
-            th:text="${item.name}"></li>
-    </ul>
+    <!-- User Profile Info -->
+    <section id="profile">
+        <h2>User Profile</h2>
+        <p><strong>Username:</strong> <span th:text="${user.username}">user1</span></p>
+        <p><strong>Email:</strong> <span th:text="${user.email}">user@example.com</span></p>
+        <p><strong>Role:</strong> <span th:text="${user.role}">USER</span></p>
+        <p>
+            <strong>Member Since:</strong>
+            <span th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2024-12-25 12:00:00</span>
+        </p>
+    </section>
 
-    <h3>Checked Out Items</h3>
-    <ul>
-        <li th:each="loan : ${borrowedLoans}"
-            th:text="'Item ' + ${loan.itemId}"></li>
-    </ul>
+    <!-- Items Section -->
+    <section id="items" style="margin-top: 3rem">
+        <h2>Your Items</h2>
+
+        <!-- Borrowed Items Accordion -->
+        <details open>
+            <summary>Your Borrowed Items</summary>
+            <table>
+                <thead>
+                <tr>
+                    <th>Tool Name</th>
+                    <th>Description</th>
+                    <th>Value</th>
+                    <th>Available</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${borrowedItems}">
+                    <td><a th:href="@{/items/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+                    <td th:text="${item.description}"></td>
+                    <td th:text="${item.value}"></td>
+                    <td th:text="${item.available} ? 'Yes' : 'No'"></td>
+                    <td>
+                        <!-- If user currently borrowed it, show Return -->
+                        <form th:if="${item.borrowedByCurrentUser}"
+                              th:action="@{/items/{id}/return(id=${item.id})}"
+                              method="post">
+                            <button type="submit" class="outline">Return</button>
+                        </form>
+
+                        <!-- If item is available & not borrowed by user (rare for a borrowed item, but for completeness) -->
+                        <form th:if="${!item.borrowedByCurrentUser && item.available}"
+                              th:action="@{/items/{id}/borrow(id=${item.id})}"
+                              method="post">
+                            <button type="submit">Borrow</button>
+                        </form>
+
+                        <!-- If item is not available & user doesn't have it but no hold for user -->
+                        <form th:if="${!item.borrowedByCurrentUser && !item.available && !item.currentUserInWaitlist}"
+                              th:action="@{/items/{id}/hold(id=${item.id})}"
+                              method="post">
+                            <button type="submit" class="secondary">Place Hold</button>
+                        </form>
+
+                        <!-- If user is on waitlist -->
+                        <form th:if="${!item.borrowedByCurrentUser && !item.available && item.currentUserInWaitlist}"
+                              th:action="@{/items/{id}/hold/cancel(id=${item.id})}"
+                              method="post">
+                            <button type="submit" class="outline secondary">Cancel Hold</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </details>
+
+        <!-- Owned Items Accordion -->
+        <details open>
+            <summary>Items You Own</summary>
+            <table>
+                <thead>
+                <tr>
+                    <th>Tool Name</th>
+                    <th>Description</th>
+                    <th>Value</th>
+                    <th>Available</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${ownedItems}">
+                    <td><a th:href="@{/items/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+                    <td th:text="${item.description}"></td>
+                    <td th:text="${item.value}"></td>
+                    <td th:text="${item.available} ? 'Yes' : 'No'"></td>
+                    <td>
+                        <!-- If user currently borrowed, show Return -->
+                        <form th:if="${item.borrowedByCurrentUser}"
+                              th:action="@{/items/{id}/return(id=${item.id})}"
+                              method="post">
+                            <button type="submit" class="outline">Return</button>
+                        </form>
+
+                        <!-- If item is available & not borrowed by user -->
+                        <form th:if="${!item.borrowedByCurrentUser && item.available}"
+                              th:action="@{/items/{id}/borrow(id=${item.id})}"
+                              method="post">
+                            <button type="submit">Borrow</button>
+                        </form>
+
+                        <!-- Waitlist logic if you want to place hold on your own item (rarely needed, but for completeness) -->
+                        <form th:if="${!item.borrowedByCurrentUser && !item.available && !item.currentUserInWaitlist}"
+                              th:action="@{/items/{id}/hold(id=${item.id})}"
+                              method="post">
+                            <button type="submit" class="secondary">Place Hold</button>
+                        </form>
+
+                        <form th:if="${!item.borrowedByCurrentUser && !item.available && item.currentUserInWaitlist}"
+                              th:action="@{/items/{id}/hold/cancel(id=${item.id})}"
+                              method="post">
+                            <button type="submit" class="outline secondary">Cancel Hold</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </details>
+    </section>
+
 </main>
 </body>
 </html>

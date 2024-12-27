@@ -8,6 +8,7 @@ import com.community.tool_library.repositories.LoanRepository;
 import com.community.tool_library.services.ItemService;
 import com.community.tool_library.services.LoanService;
 import com.community.tool_library.services.UserService;
+import com.community.tool_library.services.WaitlistService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +19,13 @@ public class LoanServiceImpl implements LoanService {
     private final LoanRepository loanRepository;
     private final ItemService itemService;
     private final UserService userService;
+    private final WaitlistService waitlistService;
 
-    public LoanServiceImpl(LoanRepository loanRepository, ItemService itemService, UserService userService) {
+    public LoanServiceImpl(LoanRepository loanRepository, ItemService itemService, UserService userService, WaitlistService waitlistService) {
         this.loanRepository = loanRepository;
         this.itemService = itemService;
         this.userService = userService;
+        this.waitlistService = waitlistService;
     }
 
     @Override
@@ -49,6 +52,14 @@ public class LoanServiceImpl implements LoanService {
         // Save loan
         Loan newLoan = loanRepository.save(loan);
 
+        // Check if user had a hold on this item
+        List<Long> waitlistUserIds = waitlistService.getWaitlistUserIdsByItem(itemId);
+
+        // If so, delete the WaitlistEntry
+        if (waitlistUserIds.contains(borrowerId)) {
+            waitlistService.cancelHold(itemId, borrowerId);
+        }
+
         return mapToDTO(newLoan);
     }
 
@@ -71,6 +82,9 @@ public class LoanServiceImpl implements LoanService {
 
         // Update item availability
         itemService.updateAvailability(itemId, true);
+
+        // Notify next user in waitlist
+        waitlistService.notifyNextUser(itemId);
 
         return mapToDTO(updatedLoan);
     }

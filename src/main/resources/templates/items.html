@@ -86,5 +86,31 @@
         </tbody>
     </table>
 </main>
+
+<!-- Notification Modal -->
+<dialog id="notificationModal" th:if="${unreadNotifications > 0}">
+    <article>
+        <header>
+            <button aria-label="Close" rel="prev" onclick="toggleModal(event)" data-target="notificationModal"></button>
+            <h3>Notifications</h3>
+        </header>
+        <p>You have <span th:text="${unreadNotifications}"></span> unread notifications. Visit your profile to view them.</p>
+        <footer>
+            <button class="secondary" onclick="toggleModal(event)" data-target="notificationModal">Close</button>
+        </footer>
+    </article>
+</dialog>
+
+<script src="/js/modal.js"></script>
+<script>
+    // Open notification modal if unread notifications
+    document.addEventListener("DOMContentLoaded", () => {
+        const notificationModal = document.getElementById("notificationModal");
+        if (notificationModal) {
+            notificationModal.showModal();
+        }
+    });
+</script>
+
 </body>
 </html>

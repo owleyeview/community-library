@@ -5,10 +5,7 @@ import com.community.tool_library.dtos.ItemStatusDTO;
 import com.community.tool_library.dtos.LoanDTO;
 import com.community.tool_library.models.Item;
 import com.community.tool_library.models.WaitlistEntry;
-import com.community.tool_library.services.ItemService;
-import com.community.tool_library.services.LoanService;
-import com.community.tool_library.services.UserService;
-import com.community.tool_library.services.WaitlistService;
+import com.community.tool_library.services.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,12 +26,14 @@ public class ItemController {
     private final LoanService loanService;
     private final WaitlistService waitlistService;
     private final UserService userService;
+    private final NotificationService notificationService;
 
-    public ItemController(ItemService itemService, LoanService loanService, WaitlistService waitlistService, UserService userService) {
+    public ItemController(ItemService itemService, LoanService loanService, WaitlistService waitlistService, UserService userService, NotificationService notificationService) {
         this.itemService = itemService;
         this.loanService = loanService;
         this.waitlistService = waitlistService;
         this.userService = userService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/items")
@@ -62,6 +61,11 @@ public class ItemController {
 
             enrichedItems.add(addStatusFields(item, userHasIt, userOnWaitlist));
         }
+
+        // count unread notifications
+        long unreadCount = notificationService.countUnreadNotifications(currentUserId);
+
+        model.addAttribute("unreadNotifications", unreadCount);
         model.addAttribute("itemlist", enrichedItems);
         return "items";
     }

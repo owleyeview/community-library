@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>My Notifications</title>
+    <meta charset="UTF-8"/>
+    <title>Notifications</title>
     <link rel="stylesheet" href="/css/pico.jade.min.css" />
 </head>
 <body>
 <header class="container">
     <nav>
         <ul>
-            <li><strong>Pleasant Vista Tool Library</strong></li>
-        </ul>
-        <ul>
-            <li><a th:href="@{/items}">Items</a></li>
+            <li><a th:href="@{/items}">Home</a></li>
             <li><a th:href="@{/profile}">Profile</a></li>
             <li>
                 <a href="#" onclick="document.getElementById('logout-form').submit(); return false;">Logout</a>
@@ -25,25 +23,16 @@
 
 <main class="container">
     <h2>Notifications</h2>
-
-    <table>
-        <thead>
-        <tr><th>Message</th><th>Status</th><th>Actions</th></tr>
-        </thead>
-        <tbody>
-        <tr th:each="notification : ${notifications}">
-            <td th:text="${notification.message}"></td>
-            <td th:text="${notification.read}"></td>
-            <td>
-                <form th:if="${notification.read == 'false'}"
-                      th:action="@{/notifications/{id}/read(id=${notification.id})}"
-                      method="post">
-                    <button type="submit">Mark As Read</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <ul>
+        <li th:each="notification : ${notifications}">
+        <strong th:if="${notification.read == false}"
+              th:text="${notification.message}">Unread message</strong>
+        <span th:if="${notification.read == true}"
+              th:text="${notification.message}">Read message</span>
+            <small th:text="${#temporals.format(notification.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
+        </li>
+    </ul>
 </main>
+
 </body>
 </html>

@@ -6,6 +6,7 @@ import com.community.tool_library.models.User;
 import com.community.tool_library.models.WaitlistEntry;
 import com.community.tool_library.repositories.WaitlistEntryRepository;
 import com.community.tool_library.services.ItemService;
+import com.community.tool_library.services.NotificationService;
 import com.community.tool_library.services.UserService;
 import com.community.tool_library.services.WaitlistService;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,13 @@ public class WaitlistServiceImpl implements WaitlistService {
     private final WaitlistEntryRepository waitlistEntryRepository;
     private final ItemService itemService;
     private final UserService userService;
+    private final NotificationService notificationService;
 
-    public WaitlistServiceImpl(WaitlistEntryRepository waitlistEntryRepository, ItemService itemService, UserService userService) {
+    public WaitlistServiceImpl(WaitlistEntryRepository waitlistEntryRepository, ItemService itemService, UserService userService, NotificationService notificationService) {
         this.waitlistEntryRepository = waitlistEntryRepository;
         this.itemService = itemService;
         this.userService = userService;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -69,7 +72,11 @@ public class WaitlistServiceImpl implements WaitlistService {
             return null;
         }
 
-        WaitlistEntry nextUser = waitlist.get(0);
+        WaitlistEntry nextUser = waitlist.getFirst();
+        String itemName = nextUser.getItem().getName();
+
+        // create notification
+        notificationService.createNotification(nextUser.getUser().getId(), "The item " + itemName + " is now available for you to borrow.");
 
         return mapToDTO(nextUser);
     }
@@ -79,6 +86,15 @@ public class WaitlistServiceImpl implements WaitlistService {
         List<WaitlistEntry> waitlist = waitlistEntryRepository.findAllByItemIdOrderByCreatedAtAsc(itemId);
         return waitlist.stream()
                 .map(this::mapToDTO)
+                .toList();
+    }
+
+    @Override
+    public List<Long> getWaitlistUserIdsByItem(Long itemId) {
+        List<WaitlistEntry> waitlist = waitlistEntryRepository.findAllByItemIdOrderByCreatedAtAsc(itemId);
+        return waitlist.stream()
+                .map(WaitlistEntry::getUser)
+                .map(User::getId)
                 .toList();
     }
 

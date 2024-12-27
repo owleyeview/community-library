@@ -14,7 +14,7 @@ public interface WaitlistService {
 
     List<WaitlistEntryDTO> getWaitlistForItem(Long itemId);
 
-    // List<Long> getWaitlistUserIdsByItem(Long itemId);
+    List<Long> getWaitlistUserIdsByItem(Long itemId);
 
     List<Long> getWaitlistItemIdsByUser(Long userId);
 }

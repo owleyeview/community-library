@@ -27,7 +27,7 @@ public class BootstrapDataLoader {
                 // Create Admin user
                 User admin = User.builder()
                         .username("admin")
-                        .password(passwordEncoder.encode("admin123"))
+                        .password(passwordEncoder.encode("!pvccadmin123"))
                         .email("admin@toolibrary.com")
                         .role("ADMIN")
                         .build();
@@ -46,23 +46,23 @@ public class BootstrapDataLoader {
                 }
                 userRepository.saveAll(users);
 
-                // Create 10 Tools (belongs to random owners from the created users)
-                List<Tool> tools = new ArrayList<>();
-                for (int i = 1; i <= 10; i++) {
-                    // Pick an owner from the user list (including admin as an owner if you want)
-                    User owner = (i % 2 == 0) ? admin : users.get(i % users.size());
-                    Tool tool = Tool.toolBuilder()
-                            .name("Tool " + i)
-                            .description("Tool number " + i + " for testing")
-                            .available(true)
-                            .value(BigDecimal.valueOf(10 * i)) // arbitrary value
-                            .owner(owner)
-                            .build();
-                    tools.add(tool);
-                }
-                itemRepository.saveAll(tools);
+//                // Create 10 Tools (belongs to random owners from the created users)
+//                List<Tool> tools = new ArrayList<>();
+//                for (int i = 1; i <= 10; i++) {
+//                    // Pick an owner from the user list (including admin as an owner if you want)
+//                    User owner = (i % 2 == 0) ? admin : users.get(i % users.size());
+//                    Tool tool = Tool.toolBuilder()
+//                            .name("Tool " + i)
+//                            .description("Tool number " + i + " for testing")
+//                            .available(true)
+//                            .value(BigDecimal.valueOf(10 * i)) // arbitrary value
+//                            .owner(owner)
+//                            .build();
+//                    tools.add(tool);
+//                }
+//                itemRepository.saveAll(tools);
 
-                System.out.println("Bootstrapped: 1 AdminUser, 4 Users, 10 Tools");
+                System.out.println("Bootstrapped: 1 AdminUser, 4 Users");
             } else {
                 System.out.println("DataLoader: Existing users found. Skipping bootstrap.");
             }

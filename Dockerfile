@@ -2,7 +2,7 @@
 FROM eclipse-temurin:21-jdk-alpine as builder
 
 LABEL authors="RashaanLightpool"
-LABEL org.opencontainers.image.source=https://github.com/owleyeview/YOUR_REPO
+LABEL org.opencontainers.image.source=https://github.com/owleyeview/community-library
 LABEL org.opencontainers.image.description="Tool Library MVP container image"
 LABEL org.opencontainers.image.licenses=MIT
 

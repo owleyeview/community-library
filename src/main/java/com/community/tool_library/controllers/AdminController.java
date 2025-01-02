@@ -125,6 +125,55 @@ public class AdminController {
         return "redirect:/admin/adminitems";
     }
 
+    @GetMapping("/adminitems/new")
+    public String newItemForm(
+            @RequestParam(name="userId", required=false) Long userId,
+            Model model
+    ) {
+        // if userId is present, store it
+        NewItemDTO newItemDto = new NewItemDTO(null, null, null, userId);
+
+        model.addAttribute("newItemDto", newItemDto);
+
+        // This can be used if we want a hidden or read-only input for user ID
+        // model.addAttribute("ownerId", userId);
+
+        return "adminnewitem";
+    }
+
+    @PostMapping("/adminitems/new")
+    public String createNewItem(
+            @ModelAttribute("newItemDto") @Valid NewItemDTO newItemDto,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        // if @Valid validation fails, reload the form with errors
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errorMessage",
+                    "Validation failed: " + bindingResult.getAllErrors().getFirst().getDefaultMessage());
+            return "adminnewitem";
+        }
+
+        // try/catch to handle exceptions from service
+        try {
+            itemService.createItem(newItemDto, newItemDto.ownerId());
+
+            // show success message
+            model.addAttribute("successMessage", "New item added successfully!");
+
+            // reinitialize the form with a blank DTO for a new item
+            NewItemDTO blankForm = new NewItemDTO(null, null, null, newItemDto.ownerId());
+            model.addAttribute("newItemDto", blankForm);
+
+            return "adminnewitem";
+        } catch (Exception e) {
+            // handle exceptions like invalid user ID or other errors
+            model.addAttribute("errorMessage", "Could not create item: " + e.getMessage());
+            model.addAttribute("newItemDto", newItemDto);
+            return "adminnewitem";
+        }
+    }
+
     // Report methods
     @GetMapping("/adminusers/{id}/report")
     public String userLoanReport(@PathVariable Long id, Model model) {
@@ -180,7 +229,6 @@ public class AdminController {
 
         // current timestamp for display
         String timestamp = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
 
         model.addAttribute("item", item);
         model.addAttribute("loans", loanReports);

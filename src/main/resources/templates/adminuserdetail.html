@@ -47,6 +47,10 @@
         <a th:href="@{/admin/adminusers/{id}/report(id=${user.id})}">
                 Loan History for <span th:text="${user.username}"></span>
         </a>
+        <br/>
+        <a th:href="@{/admin/adminitems/new(userId=${user.id})}">
+            Add a New Item for <span th:text="${user.username}"></span>
+        </a>
     </div>
 
     <!-- Action buttons -->

@@ -1,12 +1,13 @@
 package com.community.tool_library.services;
 
 import com.community.tool_library.dtos.ItemDTO;
+import com.community.tool_library.dtos.NewItemDTO;
 import com.community.tool_library.models.Item;
 
 import java.util.List;
 
 public interface ItemService {
-    ItemDTO createItem(ItemDTO itemDTO, Long userId);
+    void createItem(NewItemDTO newItemDTO, Long userId);
 
     ItemDTO getItem(Long itemId);
 

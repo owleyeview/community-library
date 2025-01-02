@@ -1,6 +1,7 @@
 package com.community.tool_library.services.impl;
 
 import com.community.tool_library.dtos.ItemDTO;
+import com.community.tool_library.dtos.NewItemDTO;
 import com.community.tool_library.models.Item;
 import com.community.tool_library.models.Tool;
 import com.community.tool_library.models.User;
@@ -28,11 +29,16 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDTO createItem(ItemDTO itemDTO, Long userId) {
+    public void createItem(NewItemDTO newItemDTO, Long userId) {
         User owner = userService.getUserEntity(userId);
-        Item item = mapToEntity(itemDTO, owner);
-        Item savedItem = itemRepository.save(item);
-        return mapToDTO(savedItem);
+        Item item = Tool.toolBuilder()
+                .name(newItemDTO.name())
+                .description(newItemDTO.description())
+                .available(true)
+                .value(newItemDTO.value())
+                .owner(owner)
+                .build();
+        itemRepository.save(item);
     }
 
     @Override

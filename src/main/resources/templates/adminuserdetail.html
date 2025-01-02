@@ -43,15 +43,18 @@
         <span th:text="${user.lastLogin != null ? #temporals.format(user.lastLogin, 'yyyy-MM-dd HH:mm:ss') : 'Never'}">Never</span>
     </p>
 
-    <div style="margin-top: 1rem;">
+    <p>
         <a th:href="@{/admin/adminusers/{id}/report(id=${user.id})}">
                 Loan History for <span th:text="${user.username}"></span>
         </a>
-        <br/>
+    </p>
+
+    <p>
         <a th:href="@{/admin/adminitems/new(userId=${user.id})}">
             Add a New Item for <span th:text="${user.username}"></span>
         </a>
-    </div>
+    </p>
+
 
     <!-- Action buttons -->
     <div style="margin-top: 2rem;">

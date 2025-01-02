@@ -48,8 +48,8 @@
         <tbody>
         <tr th:each="item : ${itemlist}">
             <td><a th:href="@{/admin/adminitems/{id}(id=${item.id})}" th:text="${item.id}"></a></td>
-            <td th:text="${item.name}"></td>
-            <td th:text="${item.description}"></td>
+            <td th:text="${#strings.abbreviate(item.name, 50)}"></td>
+            <td th:text="${#strings.abbreviate(item.description, 50)}"></td>
             <td th:text="${item.value}"></td>
             <td><a th:href="@{/admin/adminusers/{ownerId}(ownerId=${item.ownerId})}" th:text="${item.ownerId}"></a></td>
             <td th:text="${item.available} ? 'Yes' : 'No'"></td>

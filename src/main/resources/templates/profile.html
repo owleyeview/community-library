@@ -57,8 +57,8 @@
                 </thead>
                 <tbody>
                 <tr th:each="item : ${borrowedItems}">
-                    <td><a th:href="@{/items/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
-                    <td th:text="${item.description}"></td>
+                    <td><a th:href="@{/items/{id}(id=${item.id})}" th:text="${#strings.abbreviate(item.name, 50)}"></a></td>
+                    <td th:text="${#strings.abbreviate(item.description, 50)}"></td>
                     <td th:text="${item.value}"></td>
                     <td th:text="${item.available} ? 'Yes' : 'No'"></td>
                     <td>
@@ -110,8 +110,8 @@
                 </thead>
                 <tbody>
                 <tr th:each="item : ${ownedItems}">
-                    <td><a th:href="@{/items/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
-                    <td th:text="${item.description}"></td>
+                    <td><a th:href="@{/items/{id}(id=${item.id})}" th:text="${#strings.abbreviate(item.name, 50)}"></a></td>
+                    <td th:text="${#strings.abbreviate(item.description, 50)}"></td>
                     <td th:text="${item.value}"></td>
                     <td th:text="${item.available} ? 'Yes' : 'No'"></td>
                     <td>
